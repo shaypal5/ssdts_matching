@@ -1,0 +1,2 @@
+include versioneer.py
+include ssdts_matching/_version.py
