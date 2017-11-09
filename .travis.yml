@@ -12,9 +12,6 @@ before_install:
   - pip install --upgrade pip setuptools wheel
   # we don't want to compile sources for the following packages:
   - pip install --only-binary=numpy numpy
-  - pip install --only-binary=scipy scipy
-  - pip install --only-binary=pandas pandas
-  - pip install --only-binary=scikit-learn scikit-learn
 install:
   - pip install ".[test]"
 script: pytest --cov=ssdts_matching
