@@ -55,8 +55,8 @@ def popping_greedy_timestamp_match(timestamps1, timestamps2, delta):
                     timestamps2.pop(insert_ix-1)
                 # else, this timstamp edge can't match to any timestamp from
                 # the second series
-            else:  # the largest timestamp from the second series is smaller
-                   # than current stamp
+            else:   # the largest timestamp from the second series is smaller
+                    # than current stamp
                 try:
                     if timestamp - timestamps2[insert_ix-1] < delta:
                         ts1_to_ts2[timestamp] = timestamps2[insert_ix-1]
@@ -72,7 +72,7 @@ def greedy_timestamp_match(timestamps1, timestamps2, delta, pop=False):
     Runs in O(M*log(N)) where M=len(timestamps1) and M=len(timestamps2). If the
     resulting match is an injective function from the first series to the
     second one then the solution is optimal error-wise, where the error is the
-    sum of differences between matched pairs.
+    sum of differences between matched pairs. Otherwise, it is not.
 
     Arguments
     ---------
@@ -110,8 +110,8 @@ def greedy_timestamp_match(timestamps1, timestamps2, delta, pop=False):
                     ts1_to_ts2[timestamp] = closest_smaller
                 # else, this timstamp edge can't match to any timestamp from
                 # the second series
-            else:  # the largest timestamp from the second series is smaller
-                   # than current stamp
+            else:   # the largest timestamp from the second series is smaller
+                    # than current stamp
                 try:
                     if timestamp - timestamps2[insert_ix-1] < delta:
                         ts1_to_ts2[timestamp] = timestamps2[insert_ix-1]
@@ -124,6 +124,7 @@ START = 0
 DIAGONAL = 1
 UP = 2
 LEFT = 4
+
 
 def dynamic_timestamp_match(timestamps1, timestamps2, delta):
     """Optimally matches two timestamp series using dynamic programming.
@@ -156,7 +157,7 @@ def dynamic_timestamp_match(timestamps1, timestamps2, delta):
     M = len(timestamps1)
     N = len(timestamps2)
     scores = zeros((N+1, M+1))
-    directions = zeros((N+1, M+1)) # 1=diagonal, 2=up, 4=left, 0=start
+    directions = zeros((N+1, M+1))  # 1=diagonal, 2=up, 4=left, 0=start
     scores[0, 0] = 0
     directions[0, 0] = START
     for i in range(N+1):
@@ -165,15 +166,15 @@ def dynamic_timestamp_match(timestamps1, timestamps2, delta):
                 continue
             min_score = maxsize
             min_direction = START
-            if i > 0: # check up
+            if i > 0:  # check up
                 min_score = scores[i-1, j]
                 min_direction = UP
-            if j > 0: # check left
+            if j > 0:  # check left
                 left_score = scores[i, j-1] + unmatch_penalty
                 if left_score < min_score:
                     min_score = left_score
                     min_direction = LEFT
-                if i > 0: # check diagonal
+                if i > 0:  # check diagonal
                     diff = abs(timestamps1[j-1] - timestamps2[i-1])
                     diag_score = scores[i-1, j-1] + diff
                     if diag_score < min_score and diff < delta:
@@ -203,16 +204,18 @@ def dynamic_timestamp_match(timestamps1, timestamps2, delta):
 #     print('Greedy algorithm worked for {}/{} ({}%) so far.'.format(
 #         GREEDY, TOTAL, (GREEDY / TOTAL) * 100))
 #     print('Dynamic algorithm worked for {}/{} ({}%) so far.'.format(
-        # DYNAMIC, TOTAL, (DYNAMIC / TOTAL) * 100))
+#         DYNAMIC, TOTAL, (DYNAMIC / TOTAL) * 100))
 
 
 def hybrid_timestamp_match(timestamps1, timestamps2, delta):
     """Finds the optimal matching of two timestamps series using both a greedy
     algorithm and a dynamic one.
 
-    Runs in O(M*N), where M=len(timestamps1) and N=len(timestamps2).
-    Guarentees an optimal solution error-wise, where the error is the sum of
-    differences between matched pairs.
+    Runs in O(M*N), where M=len(timestamps1) and N=len(timestamps2), but has a
+    better average running time than ``dynamic_timestamp_match`` if some inputs
+    can be optimally solved with the greedy algorithm. Guarentees an optimal
+    solution error-wise, where the error is the sum of differences between
+    matched pairs.
 
     Arguments
     ---------
@@ -235,11 +238,11 @@ def hybrid_timestamp_match(timestamps1, timestamps2, delta):
     greedy = 0
     # if some series1 stamps are matched to the same series2 stamps,
     if len(set(ts1_to_ts2.values())) < len(ts1_to_ts2.values()) or \
-            len(ts1_to_ts2.keys()) < len(timestamps1): # or are unmatched...
+            len(ts1_to_ts2.keys()) < len(timestamps1):  # or are unmatched...
         # then greedy algo found a sub-optimal solution, so we go dynamic.
         ts1_to_ts2 = dynamic_timestamp_match(timestamps1, timestamps2, delta)
         dynamic += 1
-    else: # otherwise, greedy algo found an optimal solution!
+    else:  # otherwise, greedy algo found an optimal solution!
         greedy += 1
     return ts1_to_ts2
 
@@ -284,7 +287,7 @@ def vertical_aligned_timestamp_match(timestamps1, timestamps2, delta):
             ts1_right_tip = i
             if (i - ts1_left_tip > 1) or (i == (len(timestamps1)-1)):
                 # Sending a sub-problem...
-                if i == len(timestamps1) - 1: # we arrived at the edge...
+                if i == len(timestamps1) - 1:  # we arrived at the edge...
                     ts1_right_tip = i + 1
                     ts2_right_tip = len(timestamps2) + 1
                 sub_ts1 = SortedList(timestamps1[ts1_left_tip+1:ts1_right_tip])
@@ -341,7 +344,7 @@ def delta_partitioned_timestamp_match(
         if dist_to_prev > 2 * delta + 1 or i == (len(timestamps1)-1):
             # Updating right tip!
             ts1_right_tip = i
-            if i == len(timestamps1) - 1: # we arrived at the edge...
+            if i == len(timestamps1) - 1:  # we arrived at the edge...
                 ts1_right_tip = i + 1
             # Sending a sub-problem...
             sub_ts1 = SortedList(timestamps1[ts1_left_tip:ts1_right_tip])
