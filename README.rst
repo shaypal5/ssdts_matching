@@ -53,7 +53,7 @@ popping_greedy_timestamp_match
 
 Tries to match two timestamp series in a greedy fashion. Timestamps are popped from their lists as they are matched.
 
-Runs in O(M*log(N)) where M=len(timestamps1) and M=len(timestamps2). Not guarenteed to find an optimal matching error-wise, where the error is the sum of differences between matched pairs.
+Runs in ``O(M*log(N))`` where ``M=len(timestamps1)`` and ``M=len(timestamps2)``. Not guarenteed to find an optimal matching error-wise, where the error is the sum of differences between matched pairs.
 
 
 greedy_timestamp_match
@@ -61,7 +61,7 @@ greedy_timestamp_match
 
 Tries to match two timestamp series in a greedy fashion.
 
-Runs in O(M*log(N)) where M=len(timestamps1) and M=len(timestamps2). If the resulting match is an injective function from the first series to the second one then the solution is optimal error-wise, where the error is the sum of differences between matched pairs. Otherwise, it is not.
+Runs in ``O(M*log(N))`` where ``M=len(timestamps1)`` and ``M=len(timestamps2)``. If the resulting match is an injective function from the first series to the second one then the solution is optimal error-wise, where the error is the sum of differences between matched pairs. Otherwise, it is not.
 
 
 dynamic_timestamp_match
@@ -69,7 +69,7 @@ dynamic_timestamp_match
 
 Optimally matches two timestamp series using dynamic programming.
 
-Runs in O(M*N), where M=len(timestamps1) and N=len(timestamps2). Guarentees an optimal solution error-wise, where the error is the sum of differences between matched pairs.
+Runs in ``O(M*N)``, where ``M=len(timestamps1)`` and ``N=len(timestamps2)``. Guarentees an optimal solution error-wise, where the error is the sum of differences between matched pairs.
 
 
 hybrid_timestamp_match
@@ -77,7 +77,7 @@ hybrid_timestamp_match
 
 Finds the optimal matching of two timestamps series using both a greedy algorithm and a dynamic one.
 
-Runs in O(M*N), where M=len(timestamps1) and N=len(timestamps2), but has a better average running time than ``dynamic_timestamp_match`` if some inputs can be optimally solved with the greedy algorithm. Guarentees an optimal solution error-wise, where the error is the sum of differences between matched pairs.
+Runs in ``O(M*N)``, where ``M=len(timestamps1)`` and ``N=len(timestamps2)``, but has a better average running time than ``dynamic_timestamp_match`` if some inputs can be optimally solved with the greedy algorithm. Guarentees an optimal solution error-wise, where the error is the sum of differences between matched pairs.
 
 
 vertical_aligned_timestamp_match
@@ -85,13 +85,13 @@ vertical_aligned_timestamp_match
 
 Matches two timestamps series by partioning them by verticals (pairs of timestamps from both series with identical values) and matching each partition using the hybrid approach.
 
-Runs in O(M*N), where M=len(timestamps1) and N=len(timestamps2). Does not guarentee an optimal solution error-wise, where the error is the sum of differences between matched pairs.
+Runs in O(M*N), where ``M=len(timestamps1)`` and ``N=len(timestamps2)``. Does not guarentee an optimal solution error-wise, where the error is the sum of differences between matched pairs.
 
 
 delta_partitioned_timestamp_match
 ---------------------------------
 
-ttempts to match the two given series of timestamps by partioning the first series into 2*delta-separated buckets, and applying the given matching function to each (any of the above functions can be used), combining the sub-solution into a matching.
+ttempts to match the two given series of timestamps by partioning the first series into ``2 * delta``-separated buckets, and applying the given matching function to each (any of the above functions can be used), combining the sub-solution into a matching.
 
 If the provided matching function yields optimal matchings, than so is the matching provided by this function. The algorithm is not guarenteed to be symmetric; giving the same two series in the opposite order may yield a different matching.
 
