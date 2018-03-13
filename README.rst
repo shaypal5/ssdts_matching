@@ -29,8 +29,9 @@ Features
 * Pure Python.
 * Compatible with Python 3.5+.
 * Dependencies:
+
   * numpy
-  * SortedContainers
+  * `sortedcontainers <https://pypi.python.org/pypi/sortedcontainers>`_
 
 
 Use
